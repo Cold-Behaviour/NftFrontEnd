@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const Dotenv = require('dotenv-webpack');
 const WebpackShellPluginNext = require('webpack-shell-plugin-next')
@@ -85,6 +86,9 @@ module.exports = function(env, { runTest, analyze }) {
     },
     plugins: [
       new HtmlWebpackPlugin({ template: 'index.html' }),
+      new NodePolyfillPlugin({
+        excludeAliases: ["console"]
+      }),
       new Dotenv({
         path: `./.env${production ? '' :  '.' + (process.env.NODE_ENV || 'development')}`,
       }),

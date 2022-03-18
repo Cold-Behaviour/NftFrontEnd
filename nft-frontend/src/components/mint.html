@@ -1,22 +1,73 @@
-<div class="row">
-    <div class="col-lg-12">
-        <h1>Cold Behavior - My Artists</h1>
-    </div>
+<div class="row" if.bind="!chain.isConnected">
+    <h1 class="display-1 text-right m-10">Please click on 'Connect' to proceed</h1>
 </div>
-<div class="row">
-    <div class="col-lg-8">
-        <div class="card-group">
-            <div class="card" repeat.for="nft of nfts">
-                <img class="card-img-top" src.bind="token.image" alt="token" /> 
+
+<div class="container-fluid" if.bind="chain.isConnected">
+    <p>&nbsp;</p>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">${token.title}</h5>
-                    <p class="card-text">${token.description}</p>
-                </div>  
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <h1 class="card-title">Mint Artist(s)</h1>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="input-group input-group-lg">
+                                <select class="form-select form-select-lg" value.bind="tokensToMint">
+                                    <option>1</option>
+                                    <option>2</option>
+                                </select>
+                                <button class="btn btn-lg btn-primary" disabled.bind="chain.nftContractPaused"
+                                    click.trigger="mint()">Mint</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" style="text-align: right!important;">
+                            <h1>${chain.nextTokenId} / ${chain.maxTokens}</h1>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="col-lg-4">
-
-</div>
+    <p>&nbsp;</p>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row" repeat.for="nft of chain.nfts">
+                <div class="col-lg-12">
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-3">
+                                <img src.bind="nft.image" class="img-fluid rounded-start" alt="...">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-body">
+                                    <h5 class="card-title">Artist - ${nft.name}</h5>
+                                    <p class="card-text">${nft.description}</p>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-lg-4" repeat.for="attribute of nft.attributes">
+                                            <div class="alert alert-primary small"><strong>${attribute.trait_type}</strong> -
+                                                ${attribute.value}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <div class="btn-group-vertical p-3">
+                                    <a class="btn btn-primary btn-lg" href="https://testnets.opensea.io/assets/${chain.nftContractAddress}/${nft.tokenId}" target="_blan">View on OpenSea</a>
+                                    <button class="btn btn-success btn-lg" disabled>Stake<br>(coming soon)</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" if.bind="chain.nfts.length == 0">
+                <div class="col-lg-12">
+                    <h5>You do not own any NFTs, click on the 'Mint' button above to get started...</h5>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -4,6 +4,6 @@ export interface INft {
     attributes: IAttribute[];
     description: string;
     image: string;
-    title: string;
+    name: string;
     tokenId: number;
 }
