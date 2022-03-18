@@ -4,8 +4,8 @@ import { Chain } from "./services/chain";
 
 @route({
   routes: [
-    { path: "", component: import("./components/mint"), title: "Home"},
-    { path: "generate", component: import("./components/generate"), title: "Generate"}
+    { path: ["", "home"], component: import("./components/home"), title: "Home"},
+    { path: "mint", component: import("./components/mint"), title: "Mint"}
   ]
 })
 
