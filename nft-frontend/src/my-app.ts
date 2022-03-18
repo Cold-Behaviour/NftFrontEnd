@@ -1,4 +1,5 @@
 import { inject, route } from "aurelia";
+
 import { Chain } from "./services/chain";
 
 @route({
@@ -10,7 +11,6 @@ import { Chain } from "./services/chain";
 
 @inject(Chain)
 export class MyApp {
-
   constructor(
     public chain: Chain
   ) {}

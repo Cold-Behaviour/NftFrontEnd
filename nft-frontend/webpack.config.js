@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const Dotenv = require('dotenv-webpack');
-const WebpackShellPluginNext = require('webpack-shell-plugin-next')
 
 const cssLoader = 'css-loader';
 
@@ -18,17 +17,14 @@ const postcssLoader = {
   }
 };
 
-module.exports = function(env, { runTest, analyze }) {
+module.exports = function(env, { analyze }) {
   const production = env.production || process.env.NODE_ENV === 'production';
-  const test = env.test || process.env.NODE_ENV === 'test';
   return {
     target: 'web',
     mode: production ? 'production' : 'development',
     devtool: production ? undefined : 'eval-cheap-source-map',
     entry: {
-      entry: test ?
-        './test/all-spec.ts' :
-        './src/main.ts'
+      entry: './src/main.ts'
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -36,7 +32,33 @@ module.exports = function(env, { runTest, analyze }) {
     },
     resolve: {
       extensions: ['.ts', '.js'],
-      modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'dev-app'), 'node_modules']
+      modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'dev-app'), 'node_modules'],
+      alias: production ? {
+        // add your production aliasing here
+      } : {
+        ...[
+          'fetch-client',
+          'kernel',
+          'metadata',
+          'platform',
+          'platform-browser',
+          'plugin-conventions',
+          'route-recognizer',
+          'router',
+          'router-lite',
+          'runtime',
+          'runtime-html',
+          'testing',
+          'webpack-loader',
+        ].reduce((map, pkg) => {
+          const name = `@aurelia/${pkg}`;
+          map[name] = path.resolve(__dirname, 'node_modules', name, 'dist/esm/index.dev.js');
+          return map;
+        }, {
+          'aurelia': path.resolve(__dirname, 'node_modules/aurelia/dist/esm/index.dev.js'),
+          // add your development aliasing here
+        })
+      }
     },
     devServer: {
       historyApiFallback: true,
@@ -47,39 +69,11 @@ module.exports = function(env, { runTest, analyze }) {
       rules: [
         { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: 'asset' },
         { test: /\.(woff|woff2|ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,  type: 'asset' },
-        {
-          test: /\.css$/i,
-          // For style loaded in src/main.js, it's not loaded by style-loader.
-          // It's for shared styles for shadow-dom only.
-          issuer: /[/\\]src[/\\]main\.(js|ts)$/,
-          use: [ cssLoader, postcssLoader ]
-        },
-        {
-          test: /\.css$/i,
-          // For style loaded in other js/ts files, it's loaded by style-loader.
-          // They are directly injected to HTML head.
-          issuer: /(?<![/\\]src[/\\]main)\.(js|ts)$/,
-          use: [ 'style-loader', cssLoader, postcssLoader ]
-        },
-        {
-          test: /\.css$/i,
-          // For style loaded in html files, Aurelia will handle it.
-          issuer: /\.html$/,
-          use: [ cssLoader, postcssLoader ]
-        },
+        { test: /\.css$/i, use: [ 'style-loader', cssLoader, postcssLoader ] },
         { test: /\.ts$/i, use: ['ts-loader', '@aurelia/webpack-loader'], exclude: /node_modules/ },
         {
           test: /[/\\]src[/\\].+\.html$/i,
-          use: {
-            loader: '@aurelia/webpack-loader',
-            options: {
-              // The other possible Shadow DOM mode is 'closed'.
-              // If you turn on "closed" mode, there will be difficulty to perform e2e
-              // tests (such as Cypress). Because shadowRoot is not accessible through
-              // standard DOM APIs in "closed" mode.
-              defaultShadowOptions: { mode: 'open' }
-            }
-          },
+          use: '@aurelia/webpack-loader',
           exclude: /node_modules/
         }
       ]
@@ -92,14 +86,7 @@ module.exports = function(env, { runTest, analyze }) {
       new Dotenv({
         path: `./.env${production ? '' :  '.' + (process.env.NODE_ENV || 'development')}`,
       }),
-      analyze && new BundleAnalyzerPlugin(),
-      test && runTest && new WebpackShellPluginNext({
-        dev: false,
-        swallowError: true,
-        onBuildEnd: {
-          scripts: [ 'npm run test:headless' ]
-        }
-      })
+      analyze && new BundleAnalyzerPlugin()
     ].filter(p => p)
   }
 }
