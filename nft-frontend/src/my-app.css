@@ -1,3 +1,8 @@
+@font-face {
+  font-family: coign;
+  src: url(./components/font/coign.ttf);
+}
+
 .message {
   background-color: lightblue;
 }
@@ -26,9 +31,11 @@
   text-align: center;
 }
 
-.navbar-nav > li {
-  display: inline-block;
-  float:none;
+@media (min-width: 1000px){
+  .navbar-nav > li {
+    display: inline-block;
+    float:none;
+  }
 }
 
 .pAll{
@@ -72,4 +79,79 @@ h5, h6{
   position:fixed;
   bottom:0;
   width:100%;
+}
+
+@font-face {
+  font-family: "Coign-Pro-47";
+  src: url('./components/font/coign.ttf') format('truetype');
+}
+
+.avatar {
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.btn-read-more {
+  align-items: center;
+  border: none;
+  border-radius: 40px;
+  display: flex;
+  font-size: 15px;
+  grid-gap: 20px;
+  gap: 20px;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.btn-read-more:hover {
+  background-color: black;
+  border: 5px;
+  border-color: white;
+  color: white;
+}
+
+.icon {
+  background-color: #f7f7f7;
+  height: 35px;
+  width: 35px;
+  border-radius: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.h1-title {
+  font-family: "Coign-Pro-47";
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: white;
+}
+
+.marquee {
+  margin: 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+}
+
+.marquee span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 14s linear infinite;
+}
+
+.marquee2 span {
+  animation-delay: 7s;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, 0);
+  }
 }

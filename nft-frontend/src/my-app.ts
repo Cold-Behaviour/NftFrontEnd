@@ -4,7 +4,7 @@ import { Chain } from "./services/chain";
 
 @route({
   routes: [
-    { path: ["", "home"], component: import("./components/home"), title: "Home"},
+    { path: ["", "home"], component: import("./components/home")},
     { path: "mint", component: import("./components/mint"), title: "Mint"}
   ]
 })
@@ -19,4 +19,9 @@ export class MyApp {
     this.chain.connect();
   }
   
+  
+  clickScroll(id:string){
+    const element = document.getElementById(id);
+    scrollTo(0, element.offsetTop)
+  }
 }
