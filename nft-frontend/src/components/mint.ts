@@ -1,12 +1,18 @@
 import { Chain } from "../services/chain";
 import { inject, IRouteViewModel, Params } from "aurelia";
-import { INft } from "../interfaces/INft";
 
 @inject(Chain)
 export class Mint {
-    nfts: INft[];
+
+    tokensToMint: string = "1";
 
     constructor(public chain: Chain) {
         
+    }
+
+    mint() {
+        let amount: number = parseInt(this.tokensToMint);
+        this.chain.mintNft(amount);
+        this.chain.getData();
     }
 }
