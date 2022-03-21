@@ -5,9 +5,9 @@ import { inject, IRouteViewModel, Params } from "aurelia";
 export class Mint {
 
     tokensToMint: string = "1";
+    minted: boolean = false;
 
     constructor(public chain: Chain) {
-        
     }
 
     mint() {

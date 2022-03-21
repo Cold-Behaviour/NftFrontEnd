@@ -3,8 +3,35 @@
   src: url(./components/font/coign.ttf);
 }
 
+.customButton {
+  background-color: transparent;
+  border: none;
+  color: grey;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.connectButton {
+  background-color: #5382B0;
+  color: white;
+}
+
 .message {
   background-color: lightblue;
+}
+
+.mintScreenButton {
+  align-items: center;
+  border: none;
+  border-radius: 40px;
+  display: inline-block;
+  font-size: 17px;
+  font-weight: 700;
+  grid-gap: 20px;
+  gap: 20px;
+  justify-content: space-between;
+  padding: 10px 20px;
+
 }
 
 .px-xl-5{
@@ -35,6 +62,40 @@
   .navbar-nav > li {
     display: inline-block;
     float:none;
+  }
+}
+
+@media (min-width: 375px) and (min-height: 667px) {
+  .customContainer {
+    margin-top: 75px;
+  }
+}
+
+@media (max-width: 376px) {
+  .customContainer {
+    margin-top: 120px;
+  }
+
+  .img-fluid {
+    max-width: 100%;
+    height: 150px;
+  }
+
+  .connectButton {
+    margin-top: -70px;
+  }
+}
+
+@media (min-width: 375px) and (min-height: 800px) {
+  .customContainer {
+    margin-top: 150px;
+  }
+
+}
+
+@media (min-width: 500px) {
+  .customContainer {
+    margin-top: 150px;
   }
 }
 
